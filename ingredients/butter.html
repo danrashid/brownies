@@ -1,0 +1,30 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>butter</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="scripts.js"></script>
+    <script>
+      var redirectUri = (
+        window.location.origin + window.location.pathname
+      ).replace("butter", "cocoa");
+      var encodedRedirectUri = encodeURIComponent(redirectUri);
+      var clientId = getParam("client_id");
+
+      window.location.assign(
+        "https://accounts.spotify.com/authorize?client_id=" +
+          clientId +
+          "&response_type=code&redirect_uri=" +
+          encodedRedirectUri +
+          "&state=" +
+          encodedRedirectUri +
+          "," +
+          clientId
+      );
+    </script>
+  </head>
+
+  <body>
+    <p>Redirecting to login...</p>
+  </body>
+</html>

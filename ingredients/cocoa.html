@@ -1,0 +1,31 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>cocoa</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="scripts.js"></script>
+  </head>
+
+  <body>
+    <form action="https://accounts.spotify.com/api/token" method="POST">
+      <input type="hidden" name="grant_type" value="authorization_code" />
+      <input type="hidden" id="code" name="code" />
+      <input type="hidden" id="redirect_uri" name="redirect_uri" />
+      <input type="hidden" id="client_id" name="client_id" />
+      <p>
+        <label
+          >Client Secret<br /><input type="text" name="client_secret" required
+        /></label>
+      </p>
+      <p>
+        <input type="submit" />
+      </p>
+    </form>
+    <script>
+      document.getElementById("code").value = getParam("code");
+      var state = getParam("state").split(",");
+      document.getElementById("redirect_uri").value = state[0];
+      document.getElementById("client_id").value = state[1];
+    </script>
+  </body>
+</html>
