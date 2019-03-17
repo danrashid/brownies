@@ -13,7 +13,7 @@ def playlist(out_dir, id, token, market):
 
         artist = track['artist']
         title = track['title']
-        artist_title = '%s - %s' % (artist, title)
+        artist_title = ('%s - %s' % (artist, title)).replace('/', '|')
         filename = '%s/%s.mp3' % (out_dir, artist_title)
 
         if (path.isfile(filename)):
