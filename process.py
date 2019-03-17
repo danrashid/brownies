@@ -12,11 +12,13 @@ def playlist(out_dir, id, token, market):
 
         artist = track['artist']
         title = track['title']
-        filename = '%s/%s - %s.mp3' % (out_dir, artist, title)
+        artist_title = '%s - %s' % (artist, title)
+        filename = '%s/%s.mp3' % (out_dir, artist_title)
 
-        if (path.isfile(filename) == False):
-
-            print('Processing %s - %s' % (artist, title))
+        if (path.isfile(filename)):
+            print('Already processed: %s' % artist_title)
+        else:
+            print('Processing: %s' % artist_title)
             cover = fetch.cover(out_dir, track['cover'])
             wav = capture.stream(
                 out_dir, track['uri'], track['duration_ms'], token)
