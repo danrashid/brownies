@@ -1,6 +1,7 @@
 from urllib.request import urlretrieve
 from requests import get
 import parse
+import logging
 
 
 def cover(out_dir, url):
@@ -17,6 +18,10 @@ def tracks(playlist_id, token, market):
             item['track']['available_markets'].index(market)
             return True
         except:
+            track = parse.item(item)
+            logging.warn('Unavailable in %s market: %s - %s' % (
+                market, track['artist'], track['title']
+            ))
             return False
 
     def fetch(url):

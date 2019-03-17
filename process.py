@@ -3,6 +3,7 @@ import capture
 import fetch
 import write
 from os import path
+import logging
 
 
 def playlist(out_dir, id, token, market):
@@ -16,9 +17,9 @@ def playlist(out_dir, id, token, market):
         filename = '%s/%s.mp3' % (out_dir, artist_title)
 
         if (path.isfile(filename)):
-            print('Already processed: %s' % artist_title)
+            logging.debug('Already processed: %s' % artist_title)
         else:
-            print('Processing: %s' % artist_title)
+            logging.info('Processing: %s' % artist_title)
             cover = fetch.cover(out_dir, track['cover'])
             wav = capture.stream(
                 out_dir, track['uri'], track['duration_ms'], token)
