@@ -13,8 +13,8 @@ RATE = 44100
 PADDING_SECONDS = 1
 
 
-def stream(out_dir, uri, duration_ms, token):
-    filename = '%s/tmp/stream.wav' % out_dir
+def stream(dir, uri, duration_ms, token, refresh_token, auth):
+    filename = '%s/tmp/stream.wav' % dir
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,
@@ -26,7 +26,7 @@ def stream(out_dir, uri, duration_ms, token):
     frames = []
 
     sleep(PADDING_SECONDS)
-    play.track(uri, token)
+    play.track(uri, token, refresh_token, auth)
     for _i in range(0, ceil(RATE / CHUNK * (duration_ms / 1000 + PADDING_SECONDS))):
         data = stream.read(CHUNK)
         frames.append(data)

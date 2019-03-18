@@ -1,7 +1,8 @@
-from requests import put
+from requests import put, HTTPError
+import refresh
 
 
-def track(uri, token):
+def track(uri, token, refresh_token, auth, retries=0):
     r = put('https://api.spotify.com/v1/me/player/play',
             json={
                 'uris': [uri]
@@ -10,4 +11,11 @@ def track(uri, token):
                 'Authorization': 'Bearer %s' % token
             })
 
-    r.raise_for_status()
+    try:
+        r.raise_for_status()
+    except HTTPError:
+        if (r.status_code == 401 and retries == 0):
+            token = refresh.token(refresh_token, auth)
+            track(uri, token, refresh_token, auth, 1)
+        else:
+            raise

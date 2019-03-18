@@ -1,16 +1,17 @@
 from urllib.request import urlretrieve
-from requests import get
+from requests import get, HTTPError
 import parse
 import logging
+import refresh
 
 
-def cover(out_dir, url):
-    filename = '%s/tmp/cover.jpg' % (out_dir)
+def cover(dir, url):
+    filename = '%s/tmp/cover.jpg' % (dir)
     urlretrieve(url, filename)
     return filename
 
 
-def tracks(playlist_id, token, market):
+def tracks(playlist_id, token, market, refresh_token, auth):
     tracks = []
 
     def by_market(item):
@@ -24,21 +25,29 @@ def tracks(playlist_id, token, market):
             ))
             return False
 
-    def fetch(url):
+    def fetch(url, token=token, retries=0):
         r = get(url, headers={
             'Authorization': 'Bearer %s' % token
         })
 
-        r.raise_for_status()
-        json = r.json()
+        try:
+            r.raise_for_status()
 
-        available_items = filter(by_market, json['items'])
-        parsed_tracks = map(parse.item, available_items)
-        tracks.extend(parsed_tracks)
+            json = r.json()
 
-        next = json['next']
-        if (next):
-            fetch(next)
+            available_items = filter(by_market, json['items'])
+            parsed_tracks = map(parse.item, available_items)
+            tracks.extend(parsed_tracks)
+
+            next = json['next']
+            if (next):
+                fetch(next, token)
+        except HTTPError:
+            if (r.status_code == 401 and retries == 0):
+                token = refresh.token(refresh_token, auth)
+                fetch(url, token, 1)
+            else:
+                raise
 
     fetch('https://api.spotify.com/v1/playlists/%s/tracks' % playlist_id)
 
