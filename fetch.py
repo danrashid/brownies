@@ -6,7 +6,7 @@ import refresh
 
 
 def cover(dir, url):
-    filename = '%s/tmp/cover.jpg' % (dir)
+    filename = '%s/tmp/cover.jpg' % dir
     urlretrieve(url, filename)
     return filename
 

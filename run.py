@@ -44,8 +44,8 @@ def main():
     client_secret = args['secret']
     refresh_token = args['refresh']
 
-    auth = 'Basic %s' % (encode.base64('%s:%s' % (
-        client_id, client_secret))) if client_id and client_secret else None
+    auth = 'Basic %s' % encode.base64('%s:%s' % (
+        client_id, client_secret)) if client_id and client_secret else None
 
     token = refresh.token(
         refresh_token, auth) if refresh_token and auth else args['token']
