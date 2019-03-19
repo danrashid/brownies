@@ -1,7 +1,10 @@
 from requests import post
+import logging
 
 
 def token(refresh_token, auth):
+    logging.info('Refreshing access token')
+
     r = post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'refresh_token', 'refresh_token': refresh_token
     }, headers={
