@@ -16,6 +16,6 @@ def track(uri, token, refresh_token, auth, retries=0):
     except HTTPError:
         if (r.status_code == 401 and retries == 0):
             token = refresh.token(refresh_token, auth)
-            track(uri, token, refresh_token, auth, 1)
+            track(uri, token, refresh_token, auth, retries + 1)
         else:
             raise

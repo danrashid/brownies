@@ -45,7 +45,7 @@ def tracks(playlist_id, token, market, refresh_token, auth):
         except HTTPError:
             if (r.status_code == 401 and retries == 0):
                 token = refresh.token(refresh_token, auth)
-                fetch(url, token, 1)
+                fetch(url, token, retries + 1)
             else:
                 raise
 
