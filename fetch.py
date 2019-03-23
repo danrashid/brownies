@@ -20,8 +20,8 @@ def tracks(playlist_id, token, market, refresh_token, auth):
             return True
         except:
             track = parse.item(item)
-            logging.warn('Unavailable in %s market: %s - %s' % (
-                market, track['artist'], track['title']
+            logging.warn('Unavailable in %s market: %s - %s - %s' % (
+                market, track['artist'], track['title'], track['id']
             ))
             return False
 

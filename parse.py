@@ -10,6 +10,7 @@ def item(item):
         'album': album['name'],
         'cover': album['images'][0]['url'],
         'duration_ms': track['duration_ms'],
+        'id': track['id'],
         'title': track['name'],
         'uri': track['uri']
     }

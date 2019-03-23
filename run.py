@@ -8,6 +8,7 @@ from shutil import rmtree
 import logging
 import encode
 import refresh
+from requests import put
 
 
 def main():
@@ -52,6 +53,9 @@ def main():
 
     def exit_handler():
         rmtree(temp_dir)
+        put('https://api.spotify.com/v1/me/player/pause', headers={
+            'Authorization': 'Bearer %s' % token
+        })
 
     register(exit_handler)
 

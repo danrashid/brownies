@@ -2,7 +2,7 @@ from pydub import AudioSegment
 import capture
 import fetch
 import write
-from os import path
+from glob import glob
 import logging
 
 
@@ -13,16 +13,17 @@ def playlist(playlist_id, dir, token, market, refresh_token, auth):
 
     for track in tracks:
 
+        id = track['id']
         artist = track['artist']
         title = track['title']
-        artist_title = ('%s - %s' % (artist, title)
-                        ).replace('/', '_').replace('|', '_')
-        filename = '%s/%s.mp3' % (dir, artist_title)
+        artist_title_id = ('%s - %s - %s' % (artist, title, id)
+                           ).replace('/', '_').replace('|', '_')
+        filename = '%s/%s.mp3' % (dir, artist_title_id)
 
-        if (path.isfile(filename)):
-            logging.debug('Already processed: %s' % artist_title)
+        if (len(glob('%s/*%s*.mp3' % (dir, id))) > 0):
+            logging.debug('Already processed: %s' % artist_title_id)
         else:
-            logging.info('Processing: %s' % artist_title)
+            logging.info('Processing: %s' % artist_title_id)
             cover = fetch.cover(dir, track['cover'])
             wav = capture.stream(
                 dir=dir, uri=track['uri'], duration_ms=track['duration_ms'], token=token, refresh_token=refresh_token, auth=auth)
