@@ -1,0 +1,6 @@
+playlist = ''
+dir = ''
+client = ''
+secret = ''
+refresh = ''
+token = ''

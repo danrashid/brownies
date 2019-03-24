@@ -8,4 +8,4 @@ python3
 
 ### Usage
 
-`python run.py --help`
+`python main.py --help`
