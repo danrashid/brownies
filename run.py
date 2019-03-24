@@ -30,8 +30,6 @@ def main():
     parser.add_argument('-r', '--refresh',
                         help='set refresh token')
 
-    parser.add_argument('-m', '--market', default='US',
-                        help='set market (default: US)')
     parser.add_argument('-l', '--log', default='INFO',
                         help='set logging level (default: INFO)')
 
@@ -60,7 +58,7 @@ def main():
     register(exit_handler)
 
     process.playlist(playlist_id=args['playlist'], dir=args['dir'], token=token,
-                     market=args['market'], refresh_token=args['refresh'], auth=auth)
+                     refresh_token=args['refresh'], auth=auth)
 
 
 if __name__ == '__main__':

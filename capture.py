@@ -5,12 +5,17 @@ import wave
 import play
 from math import ceil
 from time import sleep
+from functools import reduce
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 PADDING_SECONDS = 1
+
+
+def _max(a, bytes):
+    return max(a, max(bytes))
 
 
 def stream(dir, uri, duration_ms, token, refresh_token, auth):
@@ -30,6 +35,9 @@ def stream(dir, uri, duration_ms, token, refresh_token, auth):
     for _i in range(0, ceil(RATE / CHUNK * (duration_ms / 1000 + PADDING_SECONDS))):
         data = stream.read(CHUNK)
         frames.append(data)
+        if (_i == CHUNK and reduce(_max, frames, 0) == 0):
+            raise RuntimeError(
+                'Only silence was received after %s frames' % CHUNK)
 
     stream.stop_stream()
     stream.close()

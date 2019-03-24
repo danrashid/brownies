@@ -6,10 +6,10 @@ from glob import glob
 import logging
 
 
-def playlist(playlist_id, dir, token, market, refresh_token, auth):
+def playlist(playlist_id, dir, token, refresh_token, auth):
 
     tracks = fetch.tracks(playlist_id=playlist_id, token=token,
-                          market=market, refresh_token=refresh_token, auth=auth)
+                          refresh_token=refresh_token, auth=auth)
 
     for track in tracks:
 
@@ -25,9 +25,13 @@ def playlist(playlist_id, dir, token, market, refresh_token, auth):
         else:
             logging.info('Processing: %s' % artist_title_id)
             cover = fetch.cover(dir, track['cover'])
-            wav = capture.stream(
-                dir=dir, uri=track['uri'], duration_ms=track['duration_ms'], token=token, refresh_token=refresh_token, auth=auth)
-            segment = AudioSegment.from_wav(wav)
 
-            write.mp3(segment=segment, filename=filename, artist=artist,
-                      title=title, album=track['album'], cover=cover)
+            try:
+                wav = capture.stream(
+                    dir=dir, uri=track['uri'], duration_ms=track['duration_ms'], token=token, refresh_token=refresh_token, auth=auth)
+                segment = AudioSegment.from_wav(wav)
+
+                write.mp3(segment=segment, filename=filename, artist=artist,
+                          title=title, album=track['album'], cover=cover)
+            except RuntimeError as e:
+                logging.warning('Skipping %s: %s' % (artist_title_id, e))

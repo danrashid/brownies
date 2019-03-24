@@ -11,19 +11,8 @@ def cover(dir, url):
     return filename
 
 
-def tracks(playlist_id, token, market, refresh_token, auth):
+def tracks(playlist_id, token, refresh_token, auth):
     tracks = []
-
-    def by_market(item):
-        try:
-            item['track']['available_markets'].index(market)
-            return True
-        except:
-            track = parse.item(item)
-            logging.warn('Unavailable in %s market: %s - %s - %s' % (
-                market, track['artist'], track['title'], track['id']
-            ))
-            return False
 
     def fetch(url, token=token, retries=0):
         r = get(url, headers={
@@ -35,8 +24,7 @@ def tracks(playlist_id, token, market, refresh_token, auth):
 
             json = r.json()
 
-            available_items = filter(by_market, json['items'])
-            parsed_tracks = map(parse.item, available_items)
+            parsed_tracks = map(parse.item, json['items'])
             tracks.extend(parsed_tracks)
 
             next = json['next']
