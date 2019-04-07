@@ -32,20 +32,21 @@ def process():
 
     tracks = _fetch_tracks()
 
+    existing_ids = mp3.existing_ids()
+
     for track in tracks:
 
         id = track['id']
         artist = track['artist']
-        title = track['title']
-        artist_title_id = ('%s - %s - %s' % (artist, title, id)
-                           ).replace('/', '_').replace('|', '_')
-        filename = '%s/%s.mp3' % (config.dir, artist_title_id)
+        title = track['title'].split(' - ')[:1][0]
+        artist_title = ('%s - %s' % (artist, title)
+                        ).replace('/', '_').replace('|', '_')
 
-        if (mp3.file_exists(id)):
-            logging.debug('Already processed: %s' % artist_title_id)
+        if (id in existing_ids):
+            logging.debug('Already processed: %s' % artist_title)
 
         else:
-            logging.info('Processing: %s' % artist_title_id)
+            logging.info('Processing: %s' % artist_title)
             cover = fetch_cover(track['cover'])
 
             try:
@@ -53,8 +54,9 @@ def process():
                     uri=track['uri'], duration_ms=track['duration_ms'])
                 segment = AudioSegment.from_wav(wav)
 
+                filename = '%s/%s.mp3' % (config.dir, artist_title)
                 mp3.write(segment=segment, filename=filename, artist=artist,
-                          title=title, album=track['album'], cover=cover)
+                          title=title, album=track['album'], cover=cover, id=id)
 
             except RuntimeError as e:
-                logging.warning('Skipping %s: %s' % (artist_title_id, e))
+                logging.warning('Skipping %s: %s' % (artist_title, e))

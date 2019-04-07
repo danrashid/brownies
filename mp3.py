@@ -1,9 +1,10 @@
 from glob import glob
+import eyed3
 
 import config
 
 
-def write(segment, filename, artist, title, album, cover):
+def write(segment, filename, artist, title, album, cover, id):
     segment.export(filename,
                    format='mp3',
                    bitrate='320k',
@@ -12,6 +13,10 @@ def write(segment, filename, artist, title, album, cover):
                          'title': title},
                    cover=cover)
 
+    id3 = eyed3.load(filename)
+    id3.tag.comments.set(id)
+    id3.tag.save()
 
-def file_exists(id):
-    return len(glob('%s/*%s*.mp3' % (config.dir, id))) > 0
+
+def existing_ids():
+    return list(map(lambda filename: eyed3.load(filename).tag.comments[0].text, glob("%s/*.mp3" % config.dir)))
