@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from os import makedirs
 from atexit import register
 from shutil import rmtree
