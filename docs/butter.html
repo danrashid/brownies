@@ -10,6 +10,10 @@
       ).replace("butter", "cocoa");
       var encodedRedirectUri = encodeURIComponent(redirectUri);
       var clientId = getParam("client_id");
+      var encodedScopes = encodeURIComponent([
+        'user-modify-playback-state',
+        'user-library-read',
+      ].join(' '))
 
       window.location.assign(
         "https://accounts.spotify.com/authorize?client_id=" +
@@ -20,7 +24,8 @@
           encodedRedirectUri +
           "," +
           clientId +
-          "&scope=user-modify-playback-state"
+          "&scope=" +
+          encodedScopes
       );
     </script>
   </head>

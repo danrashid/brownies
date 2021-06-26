@@ -16,18 +16,18 @@ def main():
     parser = argparse.ArgumentParser(description='Make some brownies')
 
     requiredNamed = parser.add_argument_group('required named arguments')
-    requiredNamed.add_argument('-p', '--playlist', required=True,
-                               help='set playlist ID')
     requiredNamed.add_argument('-d', '--dir', required=True,
                                help='set directory for MP3s')
 
-    requiredNamed.add_argument('-c', '--client',
+    requiredNamed.add_argument('-c', '--client', required=True,
                                help='set client id')
-    requiredNamed.add_argument('-s', '--secret',
+    requiredNamed.add_argument('-s', '--secret', required=True,
                                help='set client secret')
-    requiredNamed.add_argument('-r', '--refresh',
+    requiredNamed.add_argument('-r', '--refresh', required=True,
                                help='set refresh token')
 
+    parser.add_argument('-p', '--playlist',
+                        help='set playlist ID (default: Liked Songs)')
     parser.add_argument('-l', '--log', default='INFO',
                         help='set logging level (default: INFO)')
 

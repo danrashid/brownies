@@ -21,9 +21,13 @@ def _fetch_tracks():
         if (next):
             fetch(next)
 
-    fetch('https://api.spotify.com/v1/playlists/%s/tracks' % config.playlist)
+    if config.playlist:
+        fetch('https://api.spotify.com/v1/playlists/%s/tracks?limit=100' %
+              config.playlist)
+    else:
+        fetch('https://api.spotify.com/v1/me/tracks?limit=50')
 
-    logging.info('Found %d tracks in playlist' % len(tracks))
+    logging.info('Found %d tracks' % len(tracks))
 
     return tracks
 
