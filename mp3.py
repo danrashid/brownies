@@ -8,9 +8,9 @@ def write(segment, filename, artist, title, album, cover, id):
     segment.export(filename,
                    format='mp3',
                    bitrate='320k',
-                   tags={'album': album,
-                         'artist': artist,
-                         'title': title},
+                   tags={'artist': artist,
+                         'title': title,
+                         'album': album, },
                    cover=cover)
 
     id3 = eyed3.load(filename)

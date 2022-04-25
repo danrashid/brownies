@@ -10,7 +10,7 @@ def fetch_cover(url):
     return filename
 
 
-def play(uri, retries=0):
+def play(uri):
     request('PUT', 'https://api.spotify.com/v1/me/player/play', json={
         'uris': [uri]
     })
