@@ -8,44 +8,14 @@
 
   <body>
     <pre id="data"></pre>
-    <script>
+    <script type="module">
+      import { fetchToken } from "/scripts.js";
+
       const dataElement = document.getElementById("data");
 
-      // https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
-
-      const urlParams = new URLSearchParams(window.location.search);
-      let code = urlParams.get("code");
-      let [, clientId, redirectUri] = urlParams.get("state").split(",");
-
-      let codeVerifier = localStorage.getItem("code_verifier");
-
-      let body = new URLSearchParams({
-        grant_type: "authorization_code",
-        code: code,
-        redirect_uri: redirectUri,
-        client_id: clientId,
-        code_verifier: codeVerifier,
+      fetchToken((data) => {
+        dataElement.innerHTML = JSON.stringify(data, undefined, 2);
       });
-
-      const response = fetch("https://accounts.spotify.com/api/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: body,
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("HTTP status " + response.status);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          dataElement.innerHTML = JSON.stringify(data, undefined, 2);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
     </script>
   </body>
 </html>
