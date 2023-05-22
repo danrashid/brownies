@@ -1,31 +1,51 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>cocoa</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="scripts.js"></script>
   </head>
 
   <body>
-    <form action="https://accounts.spotify.com/api/token" method="POST">
-      <input type="hidden" name="grant_type" value="authorization_code" />
-      <input type="hidden" id="code" name="code" />
-      <input type="hidden" id="redirect_uri" name="redirect_uri" />
-      <input type="hidden" id="client_id" name="client_id" />
-      <p>
-        <label
-          >Client Secret<br /><input type="text" name="client_secret" required
-        /></label>
-      </p>
-      <p>
-        <input type="submit" />
-      </p>
-    </form>
+    <pre id="data"></pre>
     <script>
-      document.getElementById("code").value = getParam("code");
-      var state = getParam("state").split(",");
-      document.getElementById("redirect_uri").value = state[0];
-      document.getElementById("client_id").value = state[1];
+      const dataElement = document.getElementById("data");
+
+      // https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
+
+      const urlParams = new URLSearchParams(window.location.search);
+      let code = urlParams.get("code");
+      let [, clientId, redirectUri] = urlParams.get("state").split(",");
+
+      let codeVerifier = localStorage.getItem("code_verifier");
+
+      let body = new URLSearchParams({
+        grant_type: "authorization_code",
+        code: code,
+        redirect_uri: redirectUri,
+        client_id: clientId,
+        code_verifier: codeVerifier,
+      });
+
+      const response = fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("HTTP status " + response.status);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          dataElement.innerHTML = JSON.stringify(data, undefined, 2);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     </script>
   </body>
 </html>
