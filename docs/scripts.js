@@ -1,6 +1,6 @@
 // https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
 
-function generateRandomString(length) {
+export function generateRandomString(length) {
   let text = "";
   let possible =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -62,11 +62,20 @@ export function fetchWithErrorHandling(url, options, handleSuccess) {
     });
 }
 
-export function fetchToken(handleSuccess) {
+export function parseCallbackParams() {
   const urlParams = new URLSearchParams(window.location.search);
   let code = urlParams.get("code");
   let [, clientId, redirectUri] = urlParams.get("state").split(",");
 
+  return {
+    code,
+    clientId,
+    redirectUri,
+  };
+}
+
+export function fetchToken(handleSuccess) {
+  const { code, clientId, redirectUri } = parseCallbackParams();
   let codeVerifier = localStorage.getItem("code_verifier");
 
   let body = new URLSearchParams({
