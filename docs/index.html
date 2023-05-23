@@ -36,10 +36,10 @@
         }
 
         const redirectUri = window.location.origin + "/callback.html";
+        document.getElementById("redirect_uri").value = redirectUri;
         document
           .getElementById("authorize")
           .addEventListener("submit", populateStateValue(redirectUri));
-        document.getElementById("redirect_uri").value = redirectUri;
 
         const codeVerifier = generateRandomString(128);
         localStorage.setItem("code_verifier", codeVerifier);
