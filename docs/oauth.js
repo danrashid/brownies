@@ -34,3 +34,12 @@ export function parseCallbackParams() {
     redirectUri,
   };
 }
+
+export function populateStateValue(redirectUri) {
+  return function () {
+    const clientId = document.getElementById("client_id").value;
+    const state = [generateRandomString(16), clientId, redirectUri];
+
+    document.getElementById("state").value = state;
+  };
+}

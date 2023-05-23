@@ -18,7 +18,7 @@
       <input type="hidden" id="state" name="state" />
       <input type="hidden" id="code_challenge" name="code_challenge" />
       <script type="module">
-        import { generateRandomString } from "/oauth.js";
+        import { generateRandomString, populateStateValue } from "/oauth.js";
 
         async function generateCodeChallenge(codeVerifier) {
           function base64encode(string) {
@@ -34,13 +34,6 @@
 
           return base64encode(digest);
         }
-
-        const populateStateValue = (redirectUri) => () => {
-          const clientId = document.getElementById("client_id").value;
-          const state = [generateRandomString(16), clientId, redirectUri];
-
-          document.getElementById("state").value = state;
-        };
 
         const redirectUri = window.location.origin + "/callback.html";
         document
