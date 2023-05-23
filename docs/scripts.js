@@ -48,6 +48,20 @@ export function redirectToLogin(clientId, redirectUri, scope) {
   });
 }
 
+export function fetchWithErrorHandling(url, options, handleSuccess) {
+  return fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("HTTP status " + response.status);
+      }
+      return response.json();
+    })
+    .then(handleSuccess)
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 export function fetchToken(handleSuccess) {
   const urlParams = new URLSearchParams(window.location.search);
   let code = urlParams.get("code");
@@ -63,21 +77,15 @@ export function fetchToken(handleSuccess) {
     code_verifier: codeVerifier,
   });
 
-  fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+  return fetchWithErrorHandling(
+    "https://accounts.spotify.com/api/token",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: body,
     },
-    body: body,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("HTTP status " + response.status);
-      }
-      return response.json();
-    })
-    .then(handleSuccess)
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    handleSuccess
+  );
 }
