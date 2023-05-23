@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>brownies</title>
+  </head>
+
+  <body>
+    <script type="module">
+      import { parseCallbackParams, fetchWithErrorHandling } from "/oauth.js";
+
+      const dataElement = document.getElementById("data");
+      const { code, clientId, redirectUri } = parseCallbackParams();
+      const codeVerifier = localStorage.getItem("code_verifier");
+
+      const body = new URLSearchParams({
+        grant_type: "authorization_code",
+        code: code,
+        redirect_uri: redirectUri,
+        client_id: clientId,
+        code_verifier: codeVerifier,
+      });
+
+      fetchWithErrorHandling(
+        "https://accounts.spotify.com/api/token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: body,
+        },
+        (data) => {
+          const ps = [];
+          Object.entries(data).forEach(([key, value]) => {
+            const p = document.createElement("p");
+            const label = document.createElement("label");
+            label.append(document.createTextNode(key));
+            const br = document.createElement("br");
+            const input = document.createElement("input");
+            input.readOnly = true;
+            input.type = "text";
+            input.value = value;
+            p.append(label, br, input);
+            ps.push(p);
+          });
+          document.body.append(...ps);
+        }
+      );
+    </script>
+  </body>
+</html>
