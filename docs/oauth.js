@@ -24,18 +24,17 @@ export async function generateCodeChallenge(codeVerifier) {
   return base64encode(digest);
 }
 
-export function fetchWithErrorHandling(url, options, handleSuccess) {
-  return fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("HTTP status " + response.status);
-      }
+export async function fetchWithErrorHandling(url, options) {
+  try {
+    const response = await fetch(url, options);
+    if (response.ok) {
       return response.json();
-    })
-    .then(handleSuccess)
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    } else {
+      throw new Error("HTTP status " + response.status);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 export function parseCallbackParams() {

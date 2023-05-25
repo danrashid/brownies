@@ -21,7 +21,7 @@
         code_verifier: codeVerifier,
       });
 
-      fetchWithErrorHandling(
+      const data = await fetchWithErrorHandling(
         "https://accounts.spotify.com/api/token",
         {
           method: "POST",
@@ -29,24 +29,23 @@
             "Content-Type": "application/x-www-form-urlencoded",
           },
           body: body,
-        },
-        (data) => {
-          const ps = [];
-          Object.entries(data).forEach(([key, value]) => {
-            const p = document.createElement("p");
-            const label = document.createElement("label");
-            label.append(document.createTextNode(key));
-            const br = document.createElement("br");
-            const input = document.createElement("input");
-            input.readOnly = true;
-            input.type = "text";
-            input.value = value;
-            p.append(label, br, input);
-            ps.push(p);
-          });
-          document.body.append(...ps);
         }
       );
+
+      const ps = [];
+      Object.entries(data).forEach(([key, value]) => {
+        const p = document.createElement("p");
+        const label = document.createElement("label");
+        label.append(document.createTextNode(key));
+        const br = document.createElement("br");
+        const input = document.createElement("input");
+        input.readOnly = true;
+        input.type = "text";
+        input.value = value;
+        p.append(label, br, input);
+        ps.push(p);
+      });
+      document.body.append(...ps);
     </script>
   </body>
 </html>
