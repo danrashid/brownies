@@ -41,16 +41,28 @@ export function fetchWithErrorHandling(url, options, handleSuccess) {
 export function parseCallbackParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
-  const [_nonce, ...passthruParams] = urlParams.get("state").split(",");
+  const state = urlParams.get("state");
+  const { _nonce, ...passThruParams } = JSON.parse(atob(state));
+  console.log({
+    code,
+    ...passThruParams,
+  });
 
-  return [code, ...passthruParams];
+  return {
+    code,
+    ...passThruParams,
+  };
 }
 
-export function populateStateValue(...passthruParams) {
+export function populateStateValue(passthruParams) {
   return function () {
     const clientId = document.getElementById("client_id").value;
-    const state = [generateRandomString(16), clientId, ...passthruParams];
+    const state = {
+      _nonce: generateRandomString(16),
+      clientId,
+      ...passthruParams,
+    };
 
-    document.getElementById("state").value = state;
+    document.getElementById("state").value = btoa(JSON.stringify(state));
   };
 }

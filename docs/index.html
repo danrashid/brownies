@@ -32,7 +32,7 @@
           .getElementById("authorize")
           .addEventListener(
             "submit",
-            populateStateValue(redirectUri, codeVerifier)
+            populateStateValue({ redirectUri, codeVerifier })
           );
 
         const codeChallenge = await generateCodeChallenge(codeVerifier);

@@ -10,7 +10,8 @@
       import { parseCallbackParams, fetchWithErrorHandling } from "/oauth.js";
 
       const dataElement = document.getElementById("data");
-      const [code, clientId, redirectUri, codeVerifier] = parseCallbackParams();
+      const { code, clientId, redirectUri, codeVerifier } =
+        parseCallbackParams();
 
       const body = new URLSearchParams({
         grant_type: "authorization_code",
