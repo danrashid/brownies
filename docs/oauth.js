@@ -43,10 +43,6 @@ export function parseCallbackParams() {
   const code = urlParams.get("code");
   const state = urlParams.get("state");
   const { _nonce, ...passThruParams } = JSON.parse(atob(state));
-  console.log({
-    code,
-    ...passThruParams,
-  });
 
   return {
     code,
