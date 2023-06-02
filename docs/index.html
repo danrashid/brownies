@@ -28,12 +28,9 @@
         const codeVerifier = generateRandomString(128);
 
         document.getElementById("redirect_uri").value = redirectUri;
-        document
-          .getElementById("authorize")
-          .addEventListener(
-            "submit",
-            populateStateValue({ redirectUri, codeVerifier })
-          );
+        document.getElementById("authorize").addEventListener("submit", () => {
+          populateStateValue({ redirectUri, codeVerifier });
+        });
 
         const codeChallenge = await generateCodeChallenge(codeVerifier);
         document.getElementById("code_challenge").value = codeChallenge;

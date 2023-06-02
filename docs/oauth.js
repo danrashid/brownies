@@ -50,14 +50,12 @@ export function parseCallbackParams() {
 }
 
 export function populateStateValue(passthruParams) {
-  return function () {
-    const clientId = document.getElementById("client_id").value;
-    const state = {
-      _nonce: generateRandomString(16),
-      clientId,
-      ...passthruParams,
-    };
-
-    document.getElementById("state").value = btoa(JSON.stringify(state));
+  const clientId = document.getElementById("client_id").value;
+  const state = {
+    _nonce: generateRandomString(16),
+    clientId,
+    ...passthruParams,
   };
+
+  document.getElementById("state").value = btoa(JSON.stringify(state));
 }
