@@ -9,14 +9,14 @@ export function generateRandomString(length) {
   return text;
 }
 
-export async function generateCodeChallenge(codeVerifier) {
-  function base64encode(string) {
-    return btoa(String.fromCharCode.apply(null, new Uint8Array(string)))
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=+$/, "");
-  }
+function base64encode(string) {
+  return btoa(String.fromCharCode.apply(null, new Uint8Array(string)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
 
+export async function generateCodeChallenge(codeVerifier) {
   const encoder = new TextEncoder();
   const data = encoder.encode(codeVerifier);
   const digest = await window.crypto.subtle.digest("SHA-256", data);
@@ -49,13 +49,11 @@ export function parseCallbackParams() {
   };
 }
 
-export function populateStateValue(passthruParams) {
-  const clientId = document.getElementById("client_id").value;
-  const state = {
-    _nonce: generateRandomString(16),
-    clientId,
-    ...passthruParams,
-  };
-
-  document.getElementById("state").value = btoa(JSON.stringify(state));
+export function encodeStateValue(passthruParams) {
+  return btoa(
+    JSON.stringify({
+      _nonce: generateRandomString(16),
+      ...passthruParams,
+    })
+  );
 }

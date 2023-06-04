@@ -21,7 +21,7 @@
         import {
           generateCodeChallenge,
           generateRandomString,
-          populateStateValue,
+          encodeStateValue,
         } from "/oauth.js";
 
         const redirectUri = window.location.origin + "/callback.html";
@@ -29,7 +29,11 @@
 
         document.getElementById("redirect_uri").value = redirectUri;
         document.getElementById("authorize").addEventListener("submit", () => {
-          populateStateValue({ redirectUri, codeVerifier });
+          document.getElementById("state").value = encodeStateValue({
+            clientId: document.getElementById("client_id").value,
+            redirectUri,
+            codeVerifier,
+          });
         });
 
         const codeChallenge = await generateCodeChallenge(codeVerifier);
