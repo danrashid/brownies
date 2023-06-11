@@ -22,7 +22,7 @@
           generateCodeChallenge,
           generateRandomString,
           encodeStateValue,
-        } from "/oauth.js";
+        } from "./oauth.js";
 
         const redirectUri = window.location.origin + "/callback.html";
         const codeVerifier = generateRandomString(128);
