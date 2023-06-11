@@ -42,7 +42,12 @@
         input.readOnly = true;
         input.type = "text";
         input.value = value;
-        p.append(label, br, input);
+        const button = document.createElement("button");
+        button.textContent = "Copy";
+        button.addEventListener("click", () => {
+          navigator.clipboard.writeText(value);
+        });
+        p.append(label, br, input, " ", button);
         ps.push(p);
       });
       document.body.append(...ps);
