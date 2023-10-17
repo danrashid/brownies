@@ -12,8 +12,8 @@ def _fetch_tracks():
     tracks = []
 
     def fetch(url):
-        r = request("GET", url)
-        json = r.json()
+        response = request("GET", url)
+        json = response.json()
         parsed_tracks = map(parse, json["items"])
         tracks.extend(parsed_tracks)
 

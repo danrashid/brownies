@@ -48,7 +48,7 @@ def capture(uri, duration_ms):
 
     waveform = wave.open(filename, "wb")
     waveform.setnchannels(CHANNELS)
-    waveform.setsampwidth(p.get_sample_size(FORMAT))
+    waveform.setsampwidth(portaudio.get_sample_size(FORMAT))
     waveform.setframerate(RATE)
     waveform.writeframes(b"".join(frames))
     waveform.close()
