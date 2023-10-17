@@ -8,12 +8,14 @@ Why would anyone want to do such a terrible thing? Well, some people like listen
 
 Ubuntu packages:
 
-- python3
-- python3-dev
-- virtualenv
-- portaudio19-dev
-- ffmpeg
-- libavcodec-extra
+```
+$ sudo apt install python3 \
+python3-dev \
+virtualenv \
+portaudio19-dev \
+ffmpeg \
+libavcodec-extra
+```
 
 From your favorite music streaming service:
 

@@ -12,35 +12,38 @@ import config
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Make some brownies")
 
-    parser = argparse.ArgumentParser(description='Make some brownies')
+    requiredNamed = parser.add_argument_group("required named arguments")
+    requiredNamed.add_argument(
+        "-d", "--dir", required=True, help="set directory for MP3s"
+    )
 
-    requiredNamed = parser.add_argument_group('required named arguments')
-    requiredNamed.add_argument('-d', '--dir', required=True,
-                               help='set directory for MP3s')
+    requiredNamed.add_argument("-c", "--client", required=True, help="set client id")
+    requiredNamed.add_argument(
+        "-s", "--secret", required=True, help="set client secret"
+    )
+    requiredNamed.add_argument(
+        "-r", "--refresh", required=True, help="set refresh token"
+    )
 
-    requiredNamed.add_argument('-c', '--client', required=True,
-                               help='set client id')
-    requiredNamed.add_argument('-s', '--secret', required=True,
-                               help='set client secret')
-    requiredNamed.add_argument('-r', '--refresh', required=True,
-                               help='set refresh token')
-
-    parser.add_argument('-p', '--playlist',
-                        help='set playlist ID (default: Liked Songs)')
-    parser.add_argument('-l', '--log', default='INFO',
-                        help='set logging level (default: INFO)')
+    parser.add_argument(
+        "-p", "--playlist", help="set playlist ID (default: Liked Songs)"
+    )
+    parser.add_argument(
+        "-l", "--log", default="INFO", help="set logging level (default: INFO)"
+    )
 
     args = vars(parser.parse_args(namespace=config))
 
-    temp_dir = '%s/tmp' % args['dir']
+    temp_dir = "%s/tmp" % args["dir"]
     makedirs(temp_dir, exist_ok=True)
 
-    logging.basicConfig(level=args['log'].upper())
+    logging.basicConfig(level=args["log"].upper())
 
     def exit_handler():
         rmtree(temp_dir)
-        request('PUT', 'https://api.spotify.com/v1/me/player/pause')
+        request("PUT", "https://api.spotify.com/v1/me/player/pause")
 
     register(exit_handler)
 
@@ -48,5 +51,5 @@ def main():
     playlist.process()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
