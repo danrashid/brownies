@@ -24,7 +24,8 @@
           encodeStateValue,
         } from "./oauth.js";
 
-        const redirectUri = window.location + "callback.html";
+        const { origin, pathname } = window.location;
+        const redirectUri = `${origin}${pathname}callback.html`;
         const codeVerifier = generateRandomString(128);
 
         document.getElementById("redirect_uri").value = redirectUri;
