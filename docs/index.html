@@ -54,6 +54,12 @@
       <p>
         <input type="submit" />
       </p>
+      <script type="module">
+        const clientId = new URLSearchParams(window.location.search).get(
+          "client_id"
+        );
+        document.getElementById("client_id").value = clientId || "";
+      </script>
     </form>
   </body>
 </html>
