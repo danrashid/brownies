@@ -21,19 +21,17 @@ def _max(a, bytes):
 
 
 def capture(uri, duration_ms):
-    filename = '%s/tmp/stream.wav' % config.dir
-    p = pyaudio.PyAudio()
+    filename = "%s/tmp/stream.wav" % config.dir
+    portaudio = pyaudio.PyAudio()
 
-    stream = p.open(format=FORMAT,
-                    channels=CHANNELS,
-                    rate=RATE,
-                    input=True,
-                    frames_per_buffer=CHUNK)
+    stream = portaudio.open(
+        format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK
+    )
 
     def kill():
         stream.stop_stream()
         stream.close()
-        p.terminate()
+        portaudio.terminate()
 
     frames = []
 
@@ -42,18 +40,17 @@ def capture(uri, duration_ms):
     for _i in range(0, ceil(RATE / CHUNK * (duration_ms / 1000 + PADDING_SECONDS))):
         data = stream.read(CHUNK)
         frames.append(data)
-        if (_i == CHUNK and reduce(_max, frames, 0) == 0):
+        if _i == CHUNK and reduce(_max, frames, 0) == 0:
             kill()
-            raise RuntimeError(
-                'Only silence was received after %s frames' % CHUNK)
+            raise RuntimeError("Only silence was received after %s frames" % CHUNK)
 
     kill()
 
-    wf = wave.open(filename, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(RATE)
-    wf.writeframes(b''.join(frames))
-    wf.close()
+    waveform = wave.open(filename, "wb")
+    waveform.setnchannels(CHANNELS)
+    waveform.setsampwidth(portaudio.get_sample_size(FORMAT))
+    waveform.setframerate(RATE)
+    waveform.writeframes(b"".join(frames))
+    waveform.close()
 
     return filename

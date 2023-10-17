@@ -1,6 +1,6 @@
-playlist = ''
-dir = ''
-client = ''
-secret = ''
-refresh = ''
-token = ''
+playlist = ""
+dir = ""
+client = ""
+secret = ""
+refresh = ""
+token = ""
