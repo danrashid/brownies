@@ -66,5 +66,5 @@ def process():
                     id=id,
                 )
 
-            except RuntimeError as e:
-                logging.warning("Skipping %s: %s" % (artist_title, e))
+            except RuntimeError as error:
+                logging.warning("Skipping %s: %s" % (artist_title, error))

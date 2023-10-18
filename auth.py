@@ -19,6 +19,7 @@ def refresh_token():
         config.token = response.json()["access_token"]
     except HTTPError:
         logging.error(response.text)
+        raise
 
 
 def request(method, url, json=None, retries=0):
@@ -39,3 +40,4 @@ def request(method, url, json=None, retries=0):
             request(method, url, json=json, retries=retries + 1)
         else:
             logging.error(response.text)
+            raise
