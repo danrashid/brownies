@@ -11,7 +11,7 @@ Ubuntu packages:
 ```
 $ sudo apt install python3 \
 python3-dev \
-virtualenv \
+python3-venv \
 portaudio19-dev \
 ffmpeg \
 libavcodec-extra
@@ -29,16 +29,15 @@ From your favorite music streaming service:
 
 ### One-time setup
 
-Create and activate your virtualenv, then:
-
 ```
-$ pip3 install -r requirements.txt
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ python3 -m pip install -r requirements.txt
 ```
 
 ### Usage
 
-Activate your virtualenv, then:
-
 ```
+$ source .venv/bin/activate
 $ ./main.py --help
 ```
