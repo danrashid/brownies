@@ -42,7 +42,18 @@ def process():
         id = track["id"]
         artist = track["artist"]
         title = track["title"].split(" - ")[:1][0]
-        artist_title = ("%s - %s" % (artist, title)).replace("/", "_").replace("|", "_")
+        artist_title = (
+            ("%s - %s" % (artist, title))
+            .replace("\\", "_")
+            .replace("/", "_")
+            .replace(":", "_")
+            .replace("*", "_")
+            .replace("?", "_")
+            .replace('"', "_")
+            .replace("<", "_")
+            .replace(">", "_")
+            .replace("|", "_")
+        )
 
         if id in existing_ids:
             logging.debug("Already processed: %s" % artist_title)
