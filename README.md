@@ -42,7 +42,7 @@ Copy `template.env` to `.env` and adjust its values.
 ```
 $ source .venv/bin/activate
 $ REFRESH='<Insert refresh token here>'
-$ source .env && ./main.py -r $REFRESH ~/Music/
+$ ./main.py $REFRESH ~/Music/
 ```
 
 ### Help

@@ -2,6 +2,7 @@
 
 from os import getenv, makedirs
 from atexit import register
+from dotenv import load_dotenv
 from shutil import rmtree
 import argparse
 import logging
@@ -12,16 +13,17 @@ import config
 
 
 def main():
+    load_dotenv()
     config.client = getenv("CLIENT")
     config.secret = getenv("SECRET")
 
     parser = argparse.ArgumentParser(description="Make some brownies")
 
-    parser.add_argument("-r", "--refresh", required=True, help="refresh token")
     parser.add_argument("-p", "--playlist", help="playlist ID (default: Liked Songs)")
     parser.add_argument(
         "-l", "--log", default="INFO", help="logging level (default: INFO)"
     )
+    parser.add_argument("refresh", help="refresh token")
     parser.add_argument("dir", help="where to store the MP3s")
 
     args = vars(parser.parse_args(namespace=config))
