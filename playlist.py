@@ -5,6 +5,7 @@ import mp3
 from auth import request
 import config
 from track import fetch_cover, parse
+from uuid import uuid4
 from wav import capture
 
 
@@ -66,7 +67,11 @@ def process():
                 wav = capture(uri=track["uri"], duration_ms=track["duration_ms"])
                 segment = AudioSegment.from_wav(wav)
 
-                filename = "%s/%s.mp3" % (config.dir, artist_title)
+                filename = "%s/%s - %s.mp3" % (
+                    config.dir,
+                    artist_title,
+                    str(uuid4())[:8],
+                )
                 mp3.write(
                     segment=segment,
                     filename=filename,
