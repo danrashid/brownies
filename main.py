@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from os import makedirs
+from os import getenv, makedirs
 from atexit import register
 from shutil import rmtree
 import argparse
@@ -12,27 +12,17 @@ import config
 
 
 def main():
+    config.client = getenv("CLIENT")
+    config.secret = getenv("SECRET")
+
     parser = argparse.ArgumentParser(description="Make some brownies")
 
-    requiredNamed = parser.add_argument_group("required named arguments")
-    requiredNamed.add_argument(
-        "-d", "--dir", required=True, help="set directory for MP3s"
-    )
-
-    requiredNamed.add_argument("-c", "--client", required=True, help="set client id")
-    requiredNamed.add_argument(
-        "-s", "--secret", required=True, help="set client secret"
-    )
-    requiredNamed.add_argument(
-        "-r", "--refresh", required=True, help="set refresh token"
-    )
-
+    parser.add_argument("-r", "--refresh", required=True, help="refresh token")
+    parser.add_argument("-p", "--playlist", help="playlist ID (default: Liked Songs)")
     parser.add_argument(
-        "-p", "--playlist", help="set playlist ID (default: Liked Songs)"
+        "-l", "--log", default="INFO", help="logging level (default: INFO)"
     )
-    parser.add_argument(
-        "-l", "--log", default="INFO", help="set logging level (default: INFO)"
-    )
+    parser.add_argument("dir", help="where to store the MP3s")
 
     args = vars(parser.parse_args(namespace=config))
 

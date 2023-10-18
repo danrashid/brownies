@@ -35,9 +35,18 @@ $ source .venv/bin/activate
 $ python3 -m pip install -r requirements.txt
 ```
 
-### Usage
+Copy `template.env` to `.env` and adjust its values.
+
+### Usage example
 
 ```
 $ source .venv/bin/activate
+$ REFRESH='<Insert refresh token here>'
+$ source .env && ./main.py -r $REFRESH ~/Music/
+```
+
+### Help
+
+```
 $ ./main.py --help
 ```
