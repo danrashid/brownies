@@ -16,7 +16,10 @@ def refresh_token():
 
     try:
         response.raise_for_status()
-        config.token = response.json()["access_token"]
+        json = response.json()
+        config.token = json["access_token"]
+        if json["refresh_token"]:
+            config.refresh = json["refresh_token"]
     except HTTPError:
         logging.error(response.text)
         raise
