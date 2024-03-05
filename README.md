@@ -9,7 +9,8 @@ Why would anyone want to do such a terrible thing? Well, some people like listen
 Ubuntu packages:
 
 ```
-sudo apt install build-essential \
+sudo apt install \
+  build-essential \
   python3 \
   python3-dev \
   python3-venv \
