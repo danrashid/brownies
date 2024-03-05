@@ -9,12 +9,13 @@ Why would anyone want to do such a terrible thing? Well, some people like listen
 Ubuntu packages:
 
 ```
-$ sudo apt install python3 \
-python3-dev \
-python3-venv \
-portaudio19-dev \
-ffmpeg \
-libavcodec-extra
+sudo apt install build-essential \
+  python3 \
+  python3-dev \
+  python3-venv \
+  portaudio19-dev \
+  ffmpeg \
+  libavcodec-extra
 ```
 
 From your favorite music streaming service:
