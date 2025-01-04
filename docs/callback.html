@@ -7,11 +7,14 @@
 
   <body>
     <script type="module">
-      import { parseCallbackParams, fetchWithErrorHandling } from "./oauth.js";
+      import {
+        handleQueryStringParams,
+        fetchWithErrorHandling,
+      } from "./oauth.js";
 
       const dataElement = document.getElementById("data");
       const { code, clientId, redirectUri, codeVerifier } =
-        parseCallbackParams();
+        handleQueryStringParams();
 
       const body = new URLSearchParams({
         grant_type: "authorization_code",

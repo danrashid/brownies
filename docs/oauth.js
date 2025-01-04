@@ -37,16 +37,37 @@ export async function fetchWithErrorHandling(url, options) {
   }
 }
 
-export function parseCallbackParams() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get("code");
-  const state = urlParams.get("state");
-  const { _nonce, ...passThruParams } = JSON.parse(atob(state));
+function setElementValue(id, value) {
+  const el = document.getElementById(id);
 
-  return {
-    code,
-    ...passThruParams,
-  };
+  if (el !== null) {
+    el.value = value;
+  }
+}
+
+export function handleQueryStringParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const ret = {};
+
+  if (urlParams.size > 0) {
+    for (const [key, value] of urlParams.entries()) {
+      if (key === "state") {
+        const state = JSON.parse(atob(value));
+
+        Object.entries(state)
+          .filter(([key]) => key !== "_nonce")
+          .forEach(([key, value]) => {
+            setElementValue(key, value);
+            ret[key] = value;
+          });
+      } else {
+        setElementValue(key, value);
+        ret[key] = value;
+      }
+    }
+  }
+
+  return ret;
 }
 
 export function encodeStateValue(passthruParams) {

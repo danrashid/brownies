@@ -22,6 +22,7 @@
           generateCodeChallenge,
           generateRandomString,
           encodeStateValue,
+          handleQueryStringParams,
         } from "./oauth.js";
 
         const { origin, pathname } = window.location;
@@ -39,6 +40,8 @@
 
         const codeChallenge = await generateCodeChallenge(codeVerifier);
         document.getElementById("code_challenge").value = codeChallenge;
+
+        handleQueryStringParams();
       </script>
       <p>
         <label>
@@ -55,12 +58,6 @@
       <p>
         <input type="submit" />
       </p>
-      <script type="module">
-        const clientId = new URLSearchParams(window.location.search).get(
-          "client_id"
-        );
-        document.getElementById("client_id").value = clientId || "";
-      </script>
     </form>
   </body>
 </html>
