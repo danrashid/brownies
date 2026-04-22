@@ -9,7 +9,7 @@ idna==3.10
 packaging==25.0
 PyAudio==0.2.14
 pydub==0.25.1
-python-dotenv==1.1.1
+python-dotenv==1.2.2
 python-magic==0.4.27
 requests==2.33.0
 six==1.17.0
